@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BiC — Business Innovation Community · VIT Chennai</title>
+<meta name="description" content="BiC is VIT Chennai's business × tech club — home of the DeFy hackathon. Build. Innovate. Create.">
+<meta name="theme-color" content="#0a0b07">
+<meta property="og:title" content="BiC — Business Innovation Community">
+<meta property="og:description" content="VIT Chennai's business × tech club. Home of DeFy. Build. Innovate. Create.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23B7F04E'/%3E%3Cpath d='M32 10l5.4 16.6L54 32l-16.6 5.4L32 54l-5.4-16.6L10 32l16.6-5.4z' fill='%230b0d06'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ tokens ============ */
+:root{
+  --bg:#0a0b07;
+  --panel:#12140c;
+  --acid:#B7F04E;
+  --ink:#0b0d06;
+  --text:#eef1e4;
+  --muted:#9aa38c;
+  --line:rgba(183,240,78,.16);
+  --line-strong:rgba(183,240,78,.34);
+  --disp:"Chakra Petch","Avenir Next Condensed",system-ui,sans-serif;
+  --body:"Manrope",system-ui,-apple-system,sans-serif;
+  --ease-spring:cubic-bezier(.32,1.35,.42,1);
+  --ease-out:cubic-bezier(.22,.8,.28,1);
+}
+
+/* ============ base ============ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font:500 16px/1.65 var(--body);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+::selection{background:var(--acid);color:var(--ink)}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--acid);outline-offset:3px;border-radius:6px}
+body.lock{overflow:hidden}
+.container{width:min(1080px,100% - 40px);margin-inline:auto}
+.sec{margin-top:clamp(72px,10vw,116px)}
+
+/* section eyebrow */
+.sec-label{
+  display:flex;align-items:center;gap:12px;
+  font:700 11px/1 var(--disp);letter-spacing:.24em;text-transform:uppercase;color:var(--acid);
+}
+.sec-label::after{content:"";height:1px;flex:1;background:var(--line)}
+
+/* chips — squared, poster-style */
+.chip{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 10px 5px;border-radius:7px;
+  font:700 10px/1 var(--disp);letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;
+}
+.chip.acid{background:var(--acid);color:var(--ink)}
+.chip.ink{background:var(--ink);color:var(--acid)}
+.chip.dim{border:1px solid var(--line);color:var(--muted)}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:9px;padding:15px 26px;border-radius:999px;
+  font:700 12px/1 var(--disp);letter-spacing:.15em;text-transform:uppercase;text-decoration:none;
+  transition:transform .25s var(--ease-out),box-shadow .25s,background .25s,border-color .25s,color .25s;
+}
+.btn.primary{background:var(--acid);color:var(--ink);box-shadow:0 10px 34px rgba(183,240,78,.16)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(183,240,78,.26)}
+.btn.ghost{border:1px solid var(--line-strong);color:var(--text)}
+.btn.ghost:hover{border-color:var(--acid);background:rgba(183,240,78,.07);transform:translateY(-2px)}
+.btn.ink{background:var(--ink);color:var(--acid)}
+.btn.ink:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(11,13,6,.35)}
+
+/* cards */
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:26px;
+  transition:transform .3s var(--ease-out),border-color .3s,background .3s;
+}
+.card:hover{transform:translateY(-4px);border-color:var(--line-strong)}
+.tlink{
+  display:inline-block;color:var(--acid);text-decoration:none;
+  font:700 11px/1 var(--disp);letter-spacing:.18em;text-transform:uppercase;
+}
+.tlink:hover{text-decoration:underline;text-underline-offset:4px}
+
+/* green poster panels */
+.gpanel{
+  position:relative;overflow:hidden;
+  background:var(--acid);color:var(--ink);
+  border-radius:28px;padding:clamp(26px,4.5vw,44px);
+}
+.gpanel::after{ /* giant watermark sparkle, poster-style */
+  content:"✦";position:absolute;right:-26px;bottom:-64px;
+  font-size:220px;line-height:1;color:rgba(11,13,6,.05);pointer-events:none;
+}
+.gp-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.gp-spark{font-size:22px;line-height:1}
+
+/* scroll reveals */
+.reveal{opacity:0;transform:translateY(18px);
+  transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
+.reveal.in{opacity:1;transform:none}
+.stagger>.reveal:nth-child(2){transition-delay:.08s}
+.stagger>.reveal:nth-child(3){transition-delay:.16s}
+.stagger>.reveal:nth-child(4){transition-delay:.24s}
+.stagger>.reveal:nth-child(5){transition-delay:.3s}
+.stagger>.reveal:nth-child(6){transition-delay:.36s}
+
+/* ============ pages / routing ============ */
+.page{display:none}
+.page.active{display:block;animation:pageIn .5s var(--ease-out) both}
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.page-head{padding-top:clamp(76px,11vh,120px)}
+.page-head h1{font:700 clamp(2.1rem,5.4vw,3.2rem)/1.1 var(--disp);margin:18px 0 12px}
+.page-sub{color:var(--muted);max-width:600px}
+.note{font-size:13px;color:var(--muted);margin-top:10px}
+.note a{color:var(--acid);text-decoration:none}
+.note a:hover{text-decoration:underline}
+
+/* ============ hero ============ */
+.hero{position:relative;padding:clamp(88px,15vh,160px) 0 0;text-align:center;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(640px 340px at 50% -60px,rgba(183,240,78,.12),transparent 70%);
+}
+.eyebrow{
+  display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+  font:700 11px/1 var(--disp);letter-spacing:.26em;text-transform:uppercase;color:var(--muted);
+}
+.eyebrow .spk{color:var(--acid);font-size:12px}
+
+/* wordmark — swap this block for the real logo <img> when available */
+.logo{
+  display:inline-flex;align-items:baseline;
+  font:700 clamp(58px,14vw,124px)/1 var(--disp);
+  color:#fff;letter-spacing:.015em;margin:30px 0 6px;
+}
+.logo .li{position:relative;display:inline-block}
+.logo .bulb{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:.64em;
+  width:.36em;height:.36em;
+  stroke:#fff;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;
+}
+.tagline{font:700 clamp(1.55rem,4.6vw,2.6rem)/1.2 var(--disp);letter-spacing:.01em;margin-top:16px}
+.tagline .acid{color:var(--acid)}
+.hero-sub{color:var(--muted);max-width:620px;margin:16px auto 0}
+.cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:36px}
+
+/* hero decorations — thin outline triangles + sparkles */
+.tri{position:absolute;pointer-events:none;fill:none;stroke:rgba(183,240,78,.34);stroke-width:1.4}
+.tri.t1{width:120px;right:7%;top:16%;transform:rotate(14deg);animation:float 9s ease-in-out infinite alternate}
+.tri.t2{width:70px;left:6%;top:52%;transform:rotate(-11deg);animation:float 11s 1s ease-in-out infinite alternate}
+.tri.t3{width:46px;right:14%;bottom:10%;transform:rotate(26deg);animation:float 8s .5s ease-in-out infinite alternate}
+@keyframes float{to{translate:0 -14px}}
+.spark4{position:absolute;color:var(--acid);pointer-events:none;animation:twinkle 3.4s ease-in-out infinite}
+.spark4.s1{left:11%;top:36%;font-size:22px}
+.spark4.s2{right:20%;top:58%;font-size:15px;animation-delay:1.2s}
+@keyframes twinkle{0%,100%{opacity:.85}50%{opacity:.25}}
+
+/* ticker */
+.ticker{
+  margin-top:clamp(60px,9vw,92px);padding:14px 0;overflow:hidden;
+  border-block:1px solid var(--line);background:rgba(18,20,12,.5);
+}
+.ticker-track{display:flex;width:max-content;animation:tick 46s linear infinite}
+.ticker-group{
+  display:flex;align-items:center;gap:30px;padding-right:30px;white-space:nowrap;
+  font:600 12px/1 var(--disp);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+}
+.ticker-group .tk-s{color:var(--acid);font-size:10px}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* what we do */
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.card-num{
+  display:flex;align-items:center;gap:9px;
+  font:700 12px/1 var(--disp);letter-spacing:.22em;color:var(--acid);
+}
+.card-num::before{content:"";width:8px;height:8px;background:var(--acid);flex:none}
+.card h3{font:700 1.2rem/1.3 var(--disp);margin:16px 0 8px}
+.card p{color:var(--muted);font-size:14.5px}
+.card .tlink{margin-top:16px}
+
+/* stats gpanel */
+.stat-rows{margin-top:22px}
+.stat-row{
+  display:flex;align-items:baseline;justify-content:space-between;gap:8px 24px;flex-wrap:wrap;
+  padding:20px 2px;border-top:1px solid rgba(11,13,6,.16);
+}
+.stat-row:first-child{border-top:0;padding-top:8px}
+.st-num{font:700 clamp(1.9rem,5.4vw,3.1rem)/1 var(--disp);letter-spacing:-.01em}
+.st-lbl{
+  font:700 11px/1.6 var(--disp);letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(11,13,6,.74);text-align:right;
+}
+
+/* recruit / cta gpanels */
+.gpanel h2{font:700 clamp(1.6rem,4.4vw,2.5rem)/1.15 var(--disp);margin:18px 0 12px}
+.gpanel .gp-copy{max-width:640px;color:rgba(11,13,6,.82);font-weight:600;margin-bottom:26px}
+.gpanel .btn{position:relative;z-index:1}
+
+/* ============ posts ============ */
+.post-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+.post-card{cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:12px;text-align:left}
+.pc-top{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%}
+.pc-meta{font:600 10.5px/1 var(--disp);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.post-card h3{font:700 1.25rem/1.3 var(--disp);margin:2px 0 0}
+.post-card p{margin:0}
+
+/* reader overlay */
+.reader{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:16px}
+.reader[hidden]{display:none}
+.reader-back{position:absolute;inset:0;background:rgba(6,7,4,.74);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.reader-panel{
+  position:relative;width:min(760px,100%);max-height:88vh;max-height:88dvh;
+  background:#101208;border:1px solid var(--line);border-radius:24px;overflow:hidden;
+  box-shadow:0 40px 90px rgba(0,0,0,.6);
+  animation:pop .45s var(--ease-spring) both;
+}
+@keyframes pop{from{opacity:0;transform:translateY(26px) scale(.97)}to{opacity:1;transform:none}}
+.reader-x{
+  position:absolute;top:14px;right:14px;z-index:2;width:38px;height:38px;border-radius:999px;
+  display:grid;place-items:center;font-size:14px;
+  background:rgba(183,240,78,.1);border:1px solid var(--line);color:var(--text);
+  transition:background .25s,color .25s;
+}
+.reader-x:hover{background:var(--acid);color:var(--ink)}
+.reader-scroll{overflow-y:auto;max-height:inherit;padding:clamp(26px,5vw,46px)}
+.reader-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-right:44px}
+.reader-meta{font:600 10.5px/1 var(--disp);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+#readerTitle{font:700 clamp(1.5rem,4vw,2.15rem)/1.25 var(--disp);margin:16px 0 4px}
+.prose{margin-top:12px}
+.prose p{color:#d6dcc6;font-size:15.5px;line-height:1.8;margin:0 0 1em}
+.prose h3{
+  display:flex;align-items:center;gap:9px;
+  font:700 1rem/1.3 var(--disp);color:var(--text);margin:1.9em 0 .6em;
+}
+.prose h3::before{content:"";width:8px;height:8px;background:var(--acid);flex:none}
+.prose ul{margin:0 0 1.1em;padding-left:20px;color:#d6dcc6;font-size:15.5px;line-height:1.8;list-style:square}
+.prose li{margin:.3em 0}
+.prose li::marker{color:var(--acid)}
+.prose strong{color:var(--text)}
+.prose a{color:var(--acid);text-decoration:none}
+.prose a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* ============ members ============ */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:30px}
+.fbtn{
+  padding:10px 15px 9px;border-radius:9px;border:1px solid var(--line);
+  font:700 11px/1 var(--disp);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  transition:background .25s,color .25s,border-color .25s;
+}
+.fbtn:hover{color:var(--text);border-color:var(--line-strong)}
+.fbtn[aria-pressed="true"]{background:var(--acid);color:var(--ink);border-color:var(--acid)}
+.member-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:14px;margin-top:24px}
+.mem{display:flex;flex-direction:column;gap:14px;padding:20px}
+.avatar{
+  width:54px;height:54px;border-radius:14px;display:grid;place-items:center;
+  font:700 16px/1 var(--disp);letter-spacing:.05em;color:var(--acid);
+  background:linear-gradient(140deg,rgba(183,240,78,.22),rgba(183,240,78,.04));
+  border:1px solid var(--line);
+}
+.mem-name{font:700 15px/1.3 var(--disp)}
+.mem-role{font:600 10.5px/1.5 var(--disp);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+
+/* ============ defy ============ */
+h1.dt-title{font:700 clamp(2.4rem,8vw,4.4rem)/1.05 var(--disp);margin:20px 0 10px}
+.hollow{color:transparent;-webkit-text-stroke:2.2px var(--ink)}
+@supports not (-webkit-text-stroke:1px #000){.hollow{color:var(--ink)}}
+.dt-sub{color:rgba(11,13,6,.8);font-weight:600;max-width:560px}
+.dt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:30px 0 30px}
+.dt-grid>div{border-top:1px solid rgba(11,13,6,.22);padding-top:12px}
+.dt-grid small{
+  display:block;font:700 10px/1 var(--disp);letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(11,13,6,.62);margin-bottom:7px;
+}
+.dt-grid strong{font:700 1.2rem/1.2 var(--disp)}
+.t-intro{margin-top:14px}
+.timeline{position:relative;margin-top:34px;padding-left:40px}
+.timeline::before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:1px;background:var(--line)}
+.t-item{position:relative;padding-bottom:44px}
+.t-item:last-child{padding-bottom:6px}
+.t-item::before{ /* square node — poster motif */
+  content:"";position:absolute;left:-38px;top:5px;width:13px;height:13px;
+  background:var(--acid);box-shadow:0 0 0 4px rgba(183,240,78,.13);
+}
+.t-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.t-meta{font:600 10.5px/1 var(--disp);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.t-body{color:var(--muted);font-size:14.5px;max-width:640px;margin-top:12px}
+.t-winners{
+  display:flex;align-items:center;gap:8px;margin-top:12px;
+  font:700 10.5px/1 var(--disp);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+}
+.t-winners .spk{color:var(--acid);font-size:12px}
+
+/* ============ events ============ */
+.tv-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px}
+.tv{padding:32px}
+.tv-chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stripes{
+  height:14px;width:min(230px,72%);border-radius:4px;margin-top:30px;
+  background:repeating-linear-gradient(-45deg,rgba(183,240,78,.5) 0 8px,transparent 8px 16px);
+  border:1px solid var(--line);
+}
+.tv h3{font:700 clamp(1.5rem,3.4vw,2rem)/1.15 var(--disp);margin:14px 0 6px}
+.tv-lead{
+  font:700 11px/1 var(--disp);letter-spacing:.2em;text-transform:uppercase;color:var(--acid);
+  margin:12px 0 10px;
+}
+.tv p{margin:0}
+.idea-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:26px}
+.idea{padding:22px}
+.idea h4{font:700 1.05rem/1.3 var(--disp);margin:14px 0 6px}
+.idea p{color:var(--muted);font-size:13.5px}
+
+/* ============ footer ============ */
+footer{
+  border-top:1px solid var(--line);
+  margin-top:clamp(76px,11vw,130px);
+  padding:46px 0 calc(128px + env(safe-area-inset-bottom,0px));
+}
+.foot-in{display:flex;flex-direction:column;gap:24px}
+.foot-brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.foot-logo{font:700 20px/1 var(--disp);color:#fff}
+.foot-tag{font:700 10px/1.6 var(--disp);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.foot-tag .spk{color:var(--acid)}
+.foot-links{display:flex;gap:10px 26px;flex-wrap:wrap}
+.foot-links a{
+  font:700 11px/1 var(--disp);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .25s;
+}
+.foot-links a:hover{color:var(--acid)}
+.foot-c{font-size:12.5px;color:#6f775f}
+
+/* ============ dynamic island nav ============ */
+.island{
+  position:fixed;z-index:200;left:0;right:0;margin-inline:auto;
+  bottom:calc(14px + env(safe-area-inset-bottom,0px));
+  width:max-content;max-width:calc(100vw - 20px);
+  display:flex;align-items:stretch;gap:2px;padding:7px;
+  background:rgba(12,14,8,.72);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  border:1px solid rgba(183,240,78,.22);
+  border-radius:999px;
+  box-shadow:0 18px 50px rgba(0,0,0,.6),0 2px 10px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06);
+  transform-origin:50% 100%;
+  animation:islIn .7s .1s var(--ease-out) backwards;
+}
+@keyframes islIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.isl-dot{
+  position:absolute;z-index:0;top:7px;bottom:7px;left:0;width:0;
+  background:var(--acid);border-radius:999px;
+  box-shadow:0 4px 18px rgba(183,240,78,.35);
+}
+.isl-dot.ready{transition:left .5s var(--ease-spring),width .5s var(--ease-spring)}
+.isl-tab{
+  position:relative;z-index:1;flex:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  min-width:62px;padding:9px 10px 8px;border-radius:999px;text-decoration:none;
+  color:var(--muted);transition:color .3s;
+}
+.isl-tab:hover{color:var(--text)}
+.isl-tab svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.isl-tab .sq{fill:currentColor;stroke:none}
+.isl-tab span{font:700 8.5px/1 var(--disp);letter-spacing:.14em;text-transform:uppercase}
+.isl-tab[aria-current="page"]{color:var(--ink)}
+.isl-tab[aria-current="page"]:hover{color:var(--ink)}
+.isl-tab:focus-visible{outline-offset:-2px;border-radius:999px}
+
+/* ============ responsive ============ */
+@media (max-width:880px){
+  .cards3{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .post-grid,.tv-grid{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .dt-grid{grid-template-columns:1fr;gap:14px}
+  .dt-grid>div{padding-top:12px}
+  .tri.t2,.tri.t3,.spark4.s2{display:none}
+  .st-lbl{text-align:left;width:100%}
+  .stat-row{padding:16px 2px}
+}
+@media (max-width:400px){
+  .isl-tab{min-width:54px;padding:9px 6px 8px}
+  .container{width:calc(100% - 32px)}
+}
+
+/* ============ reduced motion ============ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<noscript>
+  <style>.page{display:block!important}</style>
+  <p style="text-align:center;padding:14px;font-size:13px;color:#9aa38c">
+    JavaScript is off — some sections (posts, members, timeline) won't render.
+  </p>
+</noscript>
+
+<main>
+
+  <!-- ================= HOME ================= -->
+  <section class="page" id="page-home">
+    <div class="hero">
+      <svg class="tri t1" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 7 93 93 7 93Z"/></svg>
+      <svg class="tri t2" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 7 93 93 7 93Z"/></svg>
+      <svg class="tri t3" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 7 93 93 7 93Z"/></svg>
+      <span class="spark4 s1" aria-hidden="true">✦</span>
+      <span class="spark4 s2" aria-hidden="true">✦</span>
+
+      <div class="container">
+        <p class="eyebrow reveal">Business Innovation Community <span class="spk">✦</span> VIT Chennai</p>
+
+        <!-- wordmark (replace with real logo <img> when the asset lands) -->
+        <div class="logo reveal" role="img" aria-label="BiC">
+          <span>B</span><span class="li">ı<svg class="bulb" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8a5.6 5.6 0 0 1 5.6 5.6c0 1.95-.95 3.15-1.95 4.25-.7.78-1.15 1.45-1.25 2.55h-4.8c-.1-1.1-.55-1.77-1.25-2.55C7.35 11.55 6.4 10.35 6.4 8.4A5.6 5.6 0 0 1 12 2.8Z"/><path d="M9.7 18.4h4.6"/><path d="M10.6 21h2.8"/></svg></span><span>C</span>
+        </div>
+
+        <h1 class="tagline reveal">Build. <span class="acid">Innovate.</span> Create.</h1>
+        <p class="hero-sub reveal">
+          VIT Chennai's business × tech club. We run DeFy, break down how products win,
+          and turn students into people who ship.
+        </p>
+        <div class="cta-row reveal">
+          <a class="btn primary" href="#defy">Explore DeFy</a>
+          <a class="btn ghost" href="#members">Meet the team</a>
+        </div>
+      </div>
+
+      <div class="ticker" aria-hidden="true"><div class="ticker-track" id="tickerTrack"></div></div>
+    </div>
+
+    <section class="container sec">
+      <div class="sec-label">✦ What we do</div>
+      <div class="cards3 stagger">
+        <article class="card reveal">
+          <div class="card-num">01</div>
+          <h3>DeFy, the flagship</h3>
+          <p>A Web3 × entrepreneurship hackathon co-hosted with the DAO Community.
+             Ideate online, build 24 hours onsite, pitch to real judges — with a serious
+             prize pool on the line.</p>
+          <a class="tlink" href="#defy">Explore DeFy ✦</a>
+        </article>
+        <article class="card reveal">
+          <div class="card-num">02</div>
+          <h3>Business × tech</h3>
+          <p>We live at the intersection: product thinking, market sense, and the tech to
+             ship it. Case sprints, product teardowns and build nights that make you
+             dangerous in both rooms.</p>
+          <a class="tlink" href="#posts">Read the field notes ✦</a>
+        </article>
+        <article class="card reveal">
+          <div class="card-num">03</div>
+          <h3>Year-round events</h3>
+          <p>Speaker sessions, ideathons, workshops and TechnoVIT headliners — a calendar
+             that keeps you building and pitching all year, not just at the flagship.</p>
+          <a class="tlink" href="#events">See what's cooking ✦</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="container sec">
+      <div class="sec-label">✦ The numbers</div>
+      <div class="gpanel reveal" style="margin-top:30px">
+        <div class="gp-top"><span class="chip ink">BiC ✦ by the numbers</span><span class="gp-spark" aria-hidden="true">✦</span></div>
+        <div class="stat-rows">
+          <div class="stat-row"><span class="st-num">03</span><span class="st-lbl">Editions of DeFy</span></div>
+          <div class="stat-row"><span class="st-num">₹40,000/-</span><span class="st-lbl">Prize pool per track at DeFy'26</span></div>
+          <div class="stat-row"><span class="st-num">24 hrs</span><span class="st-lbl">Onsite build</span></div>
+          <div class="stat-row"><span class="st-num">4–6</span><span class="st-lbl">Builders per team</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container sec">
+      <div class="sec-label">✦ Recruitment</div>
+      <div class="gpanel reveal" style="margin-top:30px">
+        <span class="chip ink">Juniors, this one's for you</span>
+        <h2>Want in? Join the next core.</h2>
+        <p class="gp-copy">
+          Recruitment opens on Instagram first — announcements, forms, tasks and results
+          all drop on @bic_vitc. If building things with sharp people sounds like your
+          semester, keep notifications on.
+        </p>
+        <a class="btn ink" href="https://www.instagram.com/bic_vitc" target="_blank" rel="noopener">Follow @bic_vitc ↗</a>
+      </div>
+    </section>
+  </section>
+
+  <!-- ================= POSTS ================= -->
+  <section class="page" id="page-posts">
+    <div class="container page-head">
+      <div class="sec-label">✦ Posts</div>
+      <h1>Field notes.</h1>
+      <p class="page-sub">
+        Guides and explainers from the club — how DeFy works, how to survive a hackathon,
+        and how to get into BiC.
+      </p>
+      <div class="post-grid stagger" id="postGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= MEMBERS ================= -->
+  <section class="page" id="page-members">
+    <div class="container page-head">
+      <div class="sec-label">✦ Members</div>
+      <h1>The people.</h1>
+      <p class="page-sub">Four batches of builders — filter by year.</p>
+      <p class="note">
+        Names below are placeholders while we finalise the roster — the real lineup lands
+        here soon. Watch <a href="https://www.instagram.com/bic_vitc" target="_blank" rel="noopener">@bic_vitc</a>.
+      </p>
+      <div class="filters" id="memberFilters"></div>
+      <div class="member-grid" id="memberGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= DEFY ================= -->
+  <section class="page" id="page-defy">
+    <div class="container page-head">
+      <div class="sec-label">✦ DeFy — the flagship</div>
+      <div class="gpanel reveal" id="defyTease" style="margin-top:30px"></div>
+      <div class="sec-label sec">✦ Past editions</div>
+      <p class="note t-intro">Every edition co-hosted with the DAO Community.</p>
+      <div class="timeline" id="defyTimeline"></div>
+    </div>
+  </section>
+
+  <!-- ================= EVENTS ================= -->
+  <section class="page" id="page-events">
+    <div class="container page-head">
+      <div class="sec-label">✦ Events</div>
+      <h1>What's cooking.</h1>
+      <p class="page-sub">
+        Two headliners locked for TechnoVIT '26, plus an ideas board the core is cooking
+        on. You get a say — vote when the polls drop.
+      </p>
+      <div class="tv-grid stagger" id="tvGrid"></div>
+      <div class="sec-label sec">✦ Ideas board</div>
+      <p class="note">Proposals, not announcements (yet). Tell us which ones deserve to exist.</p>
+      <div class="idea-grid stagger" id="ideaGrid"></div>
+      <div class="gpanel reveal sec">
+        <span class="chip ink">Open call</span>
+        <h2>Got an event idea?</h2>
+        <p class="gp-copy">
+          Pitch us anything — a speaker you want on campus, a format you miss, a chaotic
+          good idea that needs a budget. If the core vibes with it, we build it with you.
+        </p>
+        <a class="btn ink" href="https://www.instagram.com/bic_vitc" target="_blank" rel="noopener">DM @bic_vitc ↗</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container foot-in">
+    <div class="foot-brand">
+      <span class="foot-logo">BiC</span>
+      <span class="foot-tag">Business Innovation Community <span class="spk">✦</span> VIT Chennai</span>
+    </div>
+    <div class="foot-links">
+      <a href="https://www.instagram.com/bic_vitc" target="_blank" rel="noopener">Instagram — @bic_vitc ↗</a>
+      <a href="https://defy26.vercel.app" target="_blank" rel="noopener">DeFy — defy26.vercel.app ↗</a>
+      <a href="https://defy-26.devfolio.co" target="_blank" rel="noopener">Devfolio — defy-26.devfolio.co ↗</a>
+    </div>
+    <p class="foot-c">© 2026 BiC — Business Innovation Community, VIT Chennai. Build. Innovate. Create.</p>
+  </div>
+</footer>
+
+<!-- ================= READER OVERLAY ================= -->
+<div class="reader" id="reader" hidden>
+  <div class="reader-back" id="readerBack"></div>
+  <div class="reader-panel" role="dialog" aria-modal="true" aria-labelledby="readerTitle">
+    <button class="reader-x" id="readerClose" aria-label="Close reader">✕</button>
+    <div class="reader-scroll">
+      <div class="reader-head">
+        <span class="chip acid" id="readerTag"></span>
+        <span class="reader-meta" id="readerMeta"></span>
+      </div>
+      <h2 id="readerTitle"></h2>
+      <div class="prose" id="readerBody"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= DYNAMIC ISLAND NAV ================= -->
+<nav class="island" id="island" aria-label="Primary">
+  <span class="isl-dot" id="islDot" aria-hidden="true"></span>
+  <a class="isl-tab" href="#home" data-route="home" aria-label="Home">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.2 12 4.5l8 6.7"/><path d="M6.2 9.6v9.9h11.6V9.6"/></svg>
+    <span>Home</span>
+  </a>
+  <a class="isl-tab" href="#posts" data-route="posts" aria-label="Posts">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2.2"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5"/></svg>
+    <span>Posts</span>
+  </a>
+  <a class="isl-tab" href="#members" data-route="members" aria-label="Members">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8.8" cy="8.4" r="3.1"/><path d="M3.6 19.4c.5-3.1 2.6-4.9 5.2-4.9s4.7 1.8 5.2 4.9"/><circle cx="16.6" cy="9.2" r="2.5"/><path d="M16 14.6c2.2.3 3.9 1.9 4.4 4.4"/></svg>
+    <span>Members</span>
+  </a>
+  <a class="isl-tab" href="#defy" data-route="defy" aria-label="DeFy">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.2 2.5 5.5 13.4h5.4l-1.3 8.1 7.9-11h-5.5l1.2-8z"/></svg>
+    <span>DeFy</span>
+  </a>
+  <a class="isl-tab" href="#events" data-route="events" aria-label="Events">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.2"/><path d="M4 10h16M8.5 3.5v3.5M15.5 3.5v3.5"/><rect class="sq" x="7.6" y="13" width="3" height="3"/></svg>
+    <span>Events</span>
+  </a>
+</nav>
+
+<script>
+(() => {
+"use strict";
+
+/* =====================================================================
+   CONTENT — edit these arrays; the markup never needs to change.
+   ===================================================================== */
+
+const TICKER = [
+  "Build. Innovate. Create.",
+  "DeFy — VOID · in the works",
+  "Web3 × Entrepreneurship",
+  "24h onsite build",
+  "₹40,000 per track",
+  "Business × Tech",
+  "@bic_vitc",
+];
+
+const POSTS = [
+  {
+    slug: "inside-defy",
+    tag: "DeFy",
+    title: "Inside DeFy: the format, start to finish",
+    minutes: 6,
+    date: "Jan 2026",
+    excerpt: "Ideation round, 24-hour build, top-9 finale — exactly what happens at our flagship hackathon, and what judges actually reward.",
+    body: `
+      <p>DeFy is our flagship — a Web3 × entrepreneurship hackathon co-hosted with the DAO Community, where the pitch matters as much as the code. Three editions in, the format has settled into a machine that takes you from a rough idea to a judged, demoed product in a few weeks. Here's exactly how it runs.</p>
+      <h3>Stage 0 — Register</h3>
+      <p>Teams are <strong>4–6 people</strong>, registered on Devfolio. You don't need a finished idea to sign up — you need a crew. The teams that go far usually mix two or three people who can build, one who can design, and one who can sell the story. Solo? Team-formation channels open before every edition.</p>
+      <h3>Stage 1 — Online ideation</h3>
+      <p>Before anyone touches a keyboard onsite, every team submits a short idea round: the problem, who has it, why your fix works, and — if you're using Web3 rails — <em>why</em> they beat the boring alternative. Judges here filter for clarity and feasibility, not buzzword density. Shortlisted teams get the onsite invite.</p>
+      <h3>Stage 2 — 24 hours onsite</h3>
+      <p>Doors open at VIT Chennai, the brief happens, the timer starts. From there it's a straight 24-hour build with mentor checkpoints along the way — use them, they exist to stop you from over-scoping. Food and chai keep coming. By hour 20 you should be rehearsing, not integrating.</p>
+      <h3>Stage 3 — The finale</h3>
+      <p>The <strong>top 9 teams</strong> go on stage: five minutes to pitch, a live demo, then judge Q&amp;A. Judging rewards a real problem, a demo that actually runs, and answers that show you understand the business you just invented.</p>
+      <h3>What's on the line</h3>
+      <ul>
+        <li><strong>₹40,000</strong> prize pool per track at DeFy'26</li>
+        <li>₹25,000 for first, ₹15,000 for second</li>
+        <li>Sponsor bounties stacked on top</li>
+      </ul>
+      <p>The next edition — <strong>DeFy — VOID</strong> — is in the works. Dates and tracks land on <a href="https://www.instagram.com/bic_vitc" target="_blank" rel="noopener">@bic_vitc</a> and <a href="https://defy26.vercel.app" target="_blank" rel="noopener">defy26.vercel.app</a> first.</p>
+    `,
+  },
+  {
+    slug: "hackathon-101",
+    tag: "Guide",
+    title: "Hackathon survival 101",
+    minutes: 7,
+    date: "Feb 2026",
+    excerpt: "Team composition, ruthless scoping, the demo-first rule and a realistic sleep plan — everything we tell first-timers before DeFy.",
+    body: `
+      <p>Most hackathons are lost in the first two hours, not the last two. This is the advice we give every first-time team before DeFy — none of it is glamorous, all of it wins prizes.</p>
+      <h3>Build the team before the idea</h3>
+      <p>4–6 people: at least two who ship code without hand-holding, one who owns design and the deck, one who can stand on stage and talk. Five backend developers is not a team, it's a support group.</p>
+      <h3>Scope like a coward</h3>
+      <p>One user. One problem. One wow moment. Cut login, cut settings pages, hardcode everything that isn't in the demo path. Judges never open your settings page; they remember the ten seconds where the thing <em>worked</em>.</p>
+      <h3>Demo-first development</h3>
+      <p>Write the demo script in hour one — literally the sentences you'll say on stage — then build only what the script needs. If a feature isn't in the script, it doesn't exist. Integrate by hour 16, not hour 23.</p>
+      <h3>Sleep is a strategy</h3>
+      <p>90-minute shifts beat heroics. A team that slept in rotation pitches at full power while the all-nighter table forgets their own product's name. Caffeine after 4 a.m. is borrowing energy you repay on stage.</p>
+      <h3>The last three hours</h3>
+      <ul>
+        <li><strong>T-3h:</strong> feature freeze. Bug fixes only.</li>
+        <li><strong>T-2h:</strong> record a backup demo video. Live demos fail; backups don't.</li>
+        <li><strong>T-1h:</strong> two full rehearsals, out loud, with a timer.</li>
+      </ul>
+      <h3>The pitch itself</h3>
+      <p>Story → demo → numbers → ask. Thirty seconds of problem, ninety seconds of demo, the business logic, then what you'd do with a win. When a judge asks something you don't know — say so, then say how you'd find out. That answer scores.</p>
+    `,
+  },
+  {
+    slug: "join-bic",
+    tag: "Recruitment",
+    title: "How to get into BiC",
+    minutes: 5,
+    date: "Jul 2026",
+    excerpt: "What we actually look for, how the rounds work, and how to stand out without a CV full of internships.",
+    body: `
+      <p>Every recruitment season the same question lands in our DMs: "what do I need to get in?" Honest answer — less than you fear, more than filling a form. Here's how the cycle works and what actually moves the needle.</p>
+      <h3>What we look for</h3>
+      <p>Three things, in order: a <strong>bias to ship</strong> (you finish things, even small things), curiosity across <strong>both business and tech</strong> (you don't have to code — you have to care how products win), and <strong>ownership</strong> (you see a gap, you fill it without being asked). No branch gatekeeping, no CGPA cutoffs, first-years welcome.</p>
+      <h3>How the cycle runs</h3>
+      <ul>
+        <li><strong>Announcement</strong> — drops on <a href="https://www.instagram.com/bic_vitc" target="_blank" rel="noopener">@bic_vitc</a> first. Keep notifications on.</li>
+        <li><strong>The form</strong> — short. Specific answers beat adjectives: "I ran X and 40 people came" outranks "hardworking and passionate".</li>
+        <li><strong>The task</strong> — a small, real deliverable matched to your department: plan an event, design a poster, build a tiny thing, write a piece.</li>
+        <li><strong>The conversation</strong> — not an interrogation. We walk through something you've made and how you think.</li>
+      </ul>
+      <h3>How to stand out</h3>
+      <p>Bring receipts — links beat claims, always. Pick your department honestly (ops, tech, design, content, sponsorship, outreach) instead of saying "anything works". And polish the task: a small thing finished well beats an ambitious thing abandoned halfway.</p>
+      <h3>If you don't get in</h3>
+      <p>Come anyway. Events are open, DeFy needs volunteers, and the people who keep showing up are the first names remembered next cycle. Plenty of good people get in on the second attempt — this is not a closed room.</p>
+    `,
+  },
+  {
+    slug: "web3-primer",
+    tag: "Primer",
+    title: "Web3, minus the jargon",
+    minutes: 8,
+    date: "Dec 2025",
+    excerpt: "Wallets, chains, smart contracts, DAOs and DeFi — explained like you're smart but new. Enough to walk into DeFy dangerous.",
+    body: `
+      <p>You don't need to be a crypto believer to build at DeFy — you need a working vocabulary, so the track descriptions read like English. Ten minutes, no jargon, nothing shilled.</p>
+      <h3>Blockchain</h3>
+      <p>A database no single company controls. Thousands of computers hold the same copy, agree on updates in batches ("blocks"), and history can't be quietly edited afterwards. That's the whole trick — everything else builds on it.</p>
+      <h3>Wallets</h3>
+      <p>Your login and your signature, minus the company in the middle. A wallet is a pair of keys: share the public one like a username, guard the private one like a password that can never be reset. "Connect wallet" is just "sign in with" — no forgot-password email, nobody to call.</p>
+      <h3>Smart contracts</h3>
+      <p>Vending machines made of code. Put the right thing in, the programmed rule executes, and nobody — not even the person who wrote it — can renege after the fact. Escrow without the lawyer, payouts without the trust fall.</p>
+      <h3>Tokens &amp; DeFi</h3>
+      <p>If money becomes data, finance becomes software. DeFi rebuilds banking primitives — lending pools, exchanges, interest — as open programs anyone can inspect, use, or plug together like Lego. It was a DeFy'25 track for a reason: endless product surface.</p>
+      <h3>DAOs</h3>
+      <p>Internet-native clubs with a shared wallet. Members hold tokens, proposals get voted on, the treasury executes what passes. We co-host DeFy with the DAO Community — the name is literal.</p>
+      <h3>Public goods</h3>
+      <p>Open infrastructure everyone uses and nobody pays for — the open-source library inside every app, the docs everyone reads. Web3's contribution is funding mechanisms (like quadratic funding, where many small donors outweigh one whale) that pay maintainers without paywalls.</p>
+      <h3>Why any of this matters at a hackathon</h3>
+      <p>Because these rails force first-principles product thinking: who do users trust, who takes a cut, what breaks when the middleman leaves? Teams that can answer that win rooms — believers and skeptics alike.</p>
+    `,
+  },
+];
+
+const GROUPS = [
+  { id: "core26",   label: "Core '26" },
+  { id: "core25",   label: "Core '25" },
+  { id: "core24",   label: "Core '24" },
+  { id: "founding", label: "Founding team" },
+];
+
+/* Placeholder roster — paste the real names in, keep the shape. */
+const MEMBERS = [
+  { group: "core26", name: "Aarav Mehta",       role: "President" },
+  { group: "core26", name: "Diya Nair",         role: "Vice President" },
+  { group: "core26", name: "Rohan Iyer",        role: "General Secretary" },
+  { group: "core26", name: "Ananya Sharma",     role: "Operations Head" },
+  { group: "core26", name: "Karthik Raghavan",  role: "Tech Head" },
+  { group: "core26", name: "Sneha Pillai",      role: "Design Head" },
+  { group: "core26", name: "Aditya Verma",      role: "Content Head" },
+  { group: "core26", name: "Ishita Rao",        role: "Outreach Head" },
+  { group: "core26", name: "Vikram Shetty",     role: "Sponsorship Head" },
+  { group: "core26", name: "Meera Krishnan",    role: "Events Head" },
+  { group: "core25", name: "Arjun Menon",       role: "President" },
+  { group: "core25", name: "Kavya Reddy",       role: "Vice President" },
+  { group: "core25", name: "Nikhil Bhat",       role: "General Secretary" },
+  { group: "core25", name: "Priya Sundaram",    role: "Tech Head" },
+  { group: "core25", name: "Rahul Desai",       role: "Design Head" },
+  { group: "core25", name: "Tanvi Kulkarni",    role: "Events Head" },
+  { group: "core25", name: "Siddharth Joshi",   role: "Content Head" },
+  { group: "core25", name: "Nandini Gupta",     role: "Outreach Head" },
+  { group: "core24", name: "Aakash Srinivasan", role: "President" },
+  { group: "core24", name: "Ritika Malhotra",   role: "Vice President" },
+  { group: "core24", name: "Varun Chandran",    role: "General Secretary" },
+  { group: "core24", name: "Shruti Hegde",      role: "Events Head" },
+  { group: "core24", name: "Manav Kapoor",      role: "Tech Head" },
+  { group: "core24", name: "Lakshmi Narayan",   role: "Design Head" },
+  { group: "founding", name: "Dev Ramesh",      role: "Founding President" },
+  { group: "founding", name: "Anika Bose",      role: "Founding Vice President" },
+  { group: "founding", name: "Harsh Vardhan",   role: "Founding Member" },
+  { group: "founding", name: "Sanya Kapil",     role: "Founding Member" },
+];
+
+const DEFY_NEXT = {
+  edition: "04",
+  titleHTML: 'DeFy — <span class="hollow">VOID</span>',
+  sub: "The next chapter of our flagship Web3 × entrepreneurship hackathon, co-hosted with the DAO Community. Details drop when they're ready — and they'll be worth it.",
+  status: "In the works",
+  dates: "TBA",
+  tracks: "TBA",
+  url: "https://defy26.vercel.app",
+  linkLabel: "defy26.vercel.app",
+};
+
+const DEFY_EDITIONS = [
+  {
+    name: "DeFy'26",
+    dates: "12–13 Jan 2026",
+    venue: "VIT Chennai",
+    body: "Third edition. Web3 × entrepreneurship at full scale — an online ideation round, a 24-hour onsite build and a top-9 finale. ₹40,000 prize pool per track (₹25,000 first, ₹15,000 second), plus sponsor bounties on top.",
+    winners: "TBA",
+  },
+  {
+    name: "DeFy'25",
+    dates: "10–11 Jan 2025",
+    venue: "MG Auditorium",
+    body: "Second edition. Two tracks — DeFi and Public Goods — and 24 straight hours of building. The edition that locked in the format.",
+    winners: "TBA",
+  },
+  {
+    name: "DeFy'24",
+    dates: "2024",
+    venue: "VIT Chennai",
+    body: "Where it started. The first edition — smaller, scrappier, and proof that a business club could throw a serious hackathon.",
+    winners: "TBA",
+  },
+];
+
+const EVENTS = {
+  technovit: {
+    label: "TechnoVIT '26",
+    cards: [
+      {
+        num: "Event 01",
+        title: "Under wraps",
+        lead: "Daksh",
+        blurb: "The brief is locked, the name isn't public yet. Expect something no club has tried at TechnoVIT.",
+      },
+      {
+        num: "Event 02",
+        title: "Under wraps",
+        lead: "Sharan",
+        blurb: "Second headliner, same policy — it drops on @bic_vitc before it drops anywhere else.",
+      },
+    ],
+  },
+  ideas: [
+    { title: "Pitch & Roast",      blurb: "Open mic for ideas. Pitch in 90 seconds, get constructively roasted by a panel and the room." },
+    { title: "Founder AMA",        blurb: "A founder who actually built something, on stage, no filter. Ask anything." },
+    { title: "Case Sprint",        blurb: "Three hours, one messy business problem, small teams, one winning deck." },
+    { title: "Product Teardown",   blurb: "Pick an app everyone uses. Reverse-engineer its onboarding, pricing and growth loops." },
+    { title: "Onchain 101",        blurb: "Wallet to first smart contract in one sitting. Bring a laptop, leave with something deployed." },
+    { title: "Semester Demo Day",  blurb: "Show what you shipped this sem — projects, side hustles, prototypes. Low stakes, high energy." },
+  ],
+};
+
+/* =====================================================================
+   ENGINE — nothing below needs touching for content edits.
+   ===================================================================== */
+
+const $  = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- ticker ---------- */
+(function buildTicker() {
+  const track = $("#tickerTrack");
+  const items = TICKER.map(t => `<span>${t}</span><span class="tk-s">✦</span>`).join("");
+  const group = items.repeat(3); // wide enough for large screens before the -50% loop
+  track.innerHTML = `<div class="ticker-group">${group}</div><div class="ticker-group">${group}</div>`;
+})();
+
+/* ---------- posts ---------- */
+(function buildPosts() {
+  $("#postGrid").innerHTML = POSTS.map(p => `
+    <article class="card post-card reveal" role="button" tabindex="0"
+             data-slug="${p.slug}" aria-label="Read: ${p.title}">
+      <div class="pc-top">
+        <span class="chip acid">${p.tag}</span>
+        <span class="pc-meta">${p.minutes} min · ${p.date}</span>
+      </div>
+      <h3>${p.title}</h3>
+      <p>${p.excerpt}</p>
+      <span class="tlink">Read ✦</span>
+    </article>
+  `).join("");
+})();
+
+/* ---------- reader overlay ---------- */
+const reader = $("#reader");
+let lastFocus = null;
+
+function openPost(slug) {
+  const p = POSTS.find(x => x.slug === slug);
+  if (!p) return;
+  $("#readerTag").textContent = p.tag;
+  $("#readerMeta").textContent = `${p.minutes} min read · ${p.date}`;
+  $("#readerTitle").textContent = p.title;
+  $("#readerBody").innerHTML = p.body;
+  $(".reader-scroll").scrollTop = 0;
+  reader.hidden = false;
+  document.body.classList.add("lock");
+  lastFocus = document.activeElement;
+  $("#readerClose").focus();
+}
+function closeReader() {
+  if (reader.hidden) return;
+  reader.hidden = true;
+  document.body.classList.remove("lock");
+  if (lastFocus) lastFocus.focus();
+}
+$("#postGrid").addEventListener("click", e => {
+  const card = e.target.closest(".post-card");
+  if (card) openPost(card.dataset.slug);
+});
+$("#postGrid").addEventListener("keydown", e => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const card = e.target.closest(".post-card");
+  if (card) { e.preventDefault(); openPost(card.dataset.slug); }
+});
+$("#readerClose").addEventListener("click", closeReader);
+$("#readerBack").addEventListener("click", closeReader);
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeReader();
+  if (e.key === "Tab" && !reader.hidden) { // keep focus inside the dialog
+    const f = $$('button, a[href]', reader);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+});
+
+/* ---------- members ---------- */
+const initials = name =>
+  name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+
+function renderMembers(groupId) {
+  const grid = $("#memberGrid");
+  grid.innerHTML = MEMBERS.filter(m => m.group === groupId).map(m => `
+    <div class="card mem">
+      <div class="avatar" aria-hidden="true">${initials(m.name)}</div>
+      <div>
+        <div class="mem-name">${m.name}</div>
+        <div class="mem-role">${m.role}</div>
+      </div>
+    </div>
+  `).join("");
+  if (!RM && grid.animate)
+    grid.animate(
+      [{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }],
+      { duration: 320, easing: "ease-out" }
+    );
+}
+(function buildFilters() {
+  const wrap = $("#memberFilters");
+  wrap.innerHTML = GROUPS.map((g, i) =>
+    `<button class="fbtn" data-group="${g.id}" aria-pressed="${i === 0}">${g.label}</button>`
+  ).join("");
+  wrap.addEventListener("click", e => {
+    const btn = e.target.closest(".fbtn");
+    if (!btn) return;
+    $$(".fbtn", wrap).forEach(b => b.setAttribute("aria-pressed", b === btn));
+    renderMembers(btn.dataset.group);
+  });
+  renderMembers(GROUPS[0].id);
+})();
+
+/* ---------- defy ---------- */
+(function buildDefy() {
+  $("#defyTease").innerHTML = `
+    <div class="gp-top">
+      <span class="chip ink">Next edition ✦ ${DEFY_NEXT.edition}</span>
+      <span class="gp-spark" aria-hidden="true">✦</span>
+    </div>
+    <h1 class="dt-title">${DEFY_NEXT.titleHTML}</h1>
+    <p class="dt-sub">${DEFY_NEXT.sub}</p>
+    <div class="dt-grid">
+      <div><small>Status</small><strong>${DEFY_NEXT.status}</strong></div>
+      <div><small>Dates</small><strong>${DEFY_NEXT.dates}</strong></div>
+      <div><small>Tracks</small><strong>${DEFY_NEXT.tracks}</strong></div>
+    </div>
+    <a class="btn ink" href="${DEFY_NEXT.url}" target="_blank" rel="noopener">${DEFY_NEXT.linkLabel} ↗</a>
+  `;
+  $("#defyTimeline").innerHTML = DEFY_EDITIONS.map(ed => `
+    <div class="t-item reveal">
+      <div class="t-head">
+        <span class="chip acid">${ed.name}</span>
+        <span class="t-meta">${ed.dates} · ${ed.venue}</span>
+      </div>
+      <p class="t-body">${ed.body}</p>
+      <div class="t-winners"><span class="spk" aria-hidden="true">✦</span> Winners — ${ed.winners}</div>
+    </div>
+  `).join("");
+})();
+
+/* ---------- events ---------- */
+(function buildEvents() {
+  $("#tvGrid").innerHTML = EVENTS.technovit.cards.map(c => `
+    <article class="card tv reveal">
+      <div class="tv-chips">
+        <span class="chip acid">${EVENTS.technovit.label}</span>
+        <span class="chip dim">${c.num}</span>
+      </div>
+      <div class="stripes" aria-hidden="true"></div>
+      <h3>${c.title}.</h3>
+      <div class="tv-lead">Lead — ${c.lead}</div>
+      <p>${c.blurb}</p>
+    </article>
+  `).join("");
+  $("#ideaGrid").innerHTML = EVENTS.ideas.map(i => `
+    <article class="card idea reveal">
+      <span class="chip dim">Proposed</span>
+      <h4>${i.title}</h4>
+      <p>${i.blurb}</p>
+    </article>
+  `).join("");
+})();
+
+/* ---------- scroll reveals ---------- */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    en.target.classList.add("in");
+    io.unobserve(en.target);
+    // hand transitions back to the base card styles once the entrance is done
+    setTimeout(() => en.target.classList.remove("reveal", "in"), 1400);
+  });
+}, { threshold: 0.12 });
+$$(".reveal").forEach(el => io.observe(el));
+
+/* ---------- router ---------- */
+const ROUTES = ["home", "posts", "members", "defy", "events"];
+let currentRoute = null;
+
+function route() {
+  const hash = (location.hash || "#home").slice(1);
+  const r = ROUTES.includes(hash) ? hash : "home";
+  if (r === currentRoute) return;
+  const firstRun = currentRoute === null;
+  currentRoute = r;
+
+  $$(".page").forEach(p => p.classList.toggle("active", p.id === "page-" + r));
+  $$(".isl-tab").forEach(a => {
+    if (a.dataset.route === r) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  });
+  window.scrollTo(0, 0);
+  closeReader();
+  moveDot();
+  if (!firstRun) squish();
+}
+window.addEventListener("hashchange", route);
+
+/* ---------- dynamic island ---------- */
+const island = $("#island");
+const dot = $("#islDot");
+
+function moveDot() {
+  const active = $('.isl-tab[aria-current="page"]') || $(".isl-tab");
+  if (!active) return;
+  dot.style.left = active.offsetLeft + "px";
+  dot.style.width = active.offsetWidth + "px";
+}
+function squish() {
+  if (RM || !island.animate) return;
+  island.animate(
+    [
+      { transform: "scale(1)" },
+      { transform: "scale(.94, .88)", offset: 0.4 },
+      { transform: "scale(1)" },
+    ],
+    { duration: 400, easing: "cubic-bezier(.34,1.3,.4,1)" }
+  );
+}
+
+let resizeT;
+window.addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(moveDot, 90); });
+window.addEventListener("load", moveDot);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(moveDot);
+if (window.ResizeObserver) new ResizeObserver(moveDot).observe(island);
+
+/* ---------- boot ---------- */
+route();
+requestAnimationFrame(() => {
+  moveDot();
+  requestAnimationFrame(() => dot.classList.add("ready")); // no slide-in on first paint
+});
+
+/* optional deep link: index.html?open=<post-slug>#posts */
+const openParam = new URLSearchParams(location.search).get("open");
+if (openParam) openPost(openParam);
+
+})();
+</script>
+</body>
+</html>
