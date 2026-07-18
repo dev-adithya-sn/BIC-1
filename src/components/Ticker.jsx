@@ -1,20 +1,28 @@
 import React from 'react';
 
+const ITEMS = [
+  { label: 'Build · Ship · Repeat', accent: true },
+  { label: 'DeFy Hackathon', accent: false },
+  { label: '24h Innovation Sprint', accent: false },
+  { label: 'TechnoVIT Events', accent: true },
+  { label: 'VIT Chennai', accent: false },
+  { label: 'Business × Tech', accent: false },
+  { label: 'Join the Community ↗', accent: true },
+  { label: 'Web3 · AI · Product', accent: false },
+];
+
 export default function Ticker() {
-  const words = ["Build", "✦", "Innovate", "✦", "Create", "✦", "Defy the limits", "✦"];
-  
-  // Multiply list to create a seamless infinite scroll effect
-  const tickerItems = Array(4).fill(words).flat();
+  const doubled = [...ITEMS, ...ITEMS];
 
   return (
-    <div className="ticker">
-      <div className="ticker-track">
-        {tickerItems.map((item, index) => {
-          if (item === "✦") {
-            return <b key={index}>✦</b>;
-          }
-          return <span key={index}>{item}</span>;
-        })}
+    <div className="ticker-wrap">
+      <div className="ticker-inner">
+        {doubled.map((item, i) => (
+          <span key={i} className="ticker-item">
+            {item.accent && <span>💡 </span>}
+            {item.label}
+          </span>
+        ))}
       </div>
     </div>
   );

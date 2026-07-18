@@ -1,253 +1,178 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero({ onNavigate }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     if (!canvasRef.current) return;
+    const W = window.innerWidth, H = window.innerHeight;
 
-    const width = canvasRef.current.clientWidth || 500;
-    const height = canvasRef.current.clientHeight || 500;
-
-    // Scene setup
     const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 100);
+    camera.position.set(0, 0, 7);
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 6.5);
-
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current,
-      antialias: true,
-      alpha: true
-    });
-    renderer.setSize(width, height);
+    const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, antialias: true, alpha: true });
+    renderer.setSize(W, H);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Lights (required for MeshPhysicalMaterial refraction)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-    scene.add(ambientLight);
+    scene.add(new THREE.AmbientLight(0x221508, 2));
 
-    const pointLight1 = new THREE.PointLight(0x00dfd8, 4, 15);
-    pointLight1.position.set(-3, 3, 3);
-    scene.add(pointLight1);
+    const amberKey = new THREE.PointLight(0xf5a623, 6, 20);
+    amberKey.position.set(-3, 4, 3);
+    scene.add(amberKey);
 
-    const pointLight2 = new THREE.PointLight(0xff007a, 4, 15);
-    pointLight2.position.set(3, -3, 3);
-    scene.add(pointLight2);
+    const fillLight = new THREE.PointLight(0x8b5cf6, 3, 15);
+    fillLight.position.set(4, -2, 2);
+    scene.add(fillLight);
 
-    const bulbLight = new THREE.PointLight(0x7928ca, 6, 8);
-    bulbLight.position.set(0, 0.2, 0);
-    scene.add(bulbLight);
+    const rimLight = new THREE.PointLight(0x00e8f0, 2, 12);
+    rimLight.position.set(0, -3, -4);
+    scene.add(rimLight);
 
-    // Generate Lightbulb shape profile
-    const points = [];
-    const segments = 32;
-    for (let i = 0; i <= segments; i++) {
-      const angle = (i / segments) * 2.2;
-      const x = Math.sin(angle) * 0.95;
-      const y = Math.cos(angle) * 0.95;
-      points.push(new THREE.Vector2(x, y));
+    const glow = new THREE.PointLight(0xffcc5c, 5, 6);
+    glow.position.set(0, 0.1, 0);
+    scene.add(glow);
+
+    // Bulb
+    const pts = [];
+    for (let i = 0; i <= 30; i++) {
+      const a = (i / 30) * 2.3;
+      pts.push(new THREE.Vector2(Math.sin(a) * 1.05, Math.cos(a) * 1.05));
     }
-    // Cap connector points
-    points.push(new THREE.Vector2(0.42, -0.95));
-    points.push(new THREE.Vector2(0.38, -1.2));
-    points.push(new THREE.Vector2(0.0, -1.35));
+    pts.push(new THREE.Vector2(0.45, -1.05), new THREE.Vector2(0.40, -1.3));
+    for (let j = 0; j < 5; j++) {
+      const yy = -1.3 - j * 0.09;
+      pts.push(new THREE.Vector2(0.37, yy), new THREE.Vector2(0.40, yy - 0.04));
+    }
+    pts.push(new THREE.Vector2(0.2, -1.78), new THREE.Vector2(0.0, -1.88));
 
-    const latheGeometry = new THREE.LatheGeometry(points, 32);
-
-    // Premium physical glass material with high refraction/transmission
-    const glassMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
-      metalness: 0.05,
-      roughness: 0.08,
-      transmission: 0.95, // high transparency
-      ior: 1.5, // index of refraction
-      thickness: 1.5, // physical glass thickness
-      specularIntensity: 1.0,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1,
-      transparent: true,
-      opacity: 1.0
+    const latheGeo = new THREE.LatheGeometry(pts, 40);
+    const glassMat = new THREE.MeshPhysicalMaterial({
+      color: 0xfff4d6, metalness: 0.0, roughness: 0.04,
+      transmission: 0.88, ior: 1.5, thickness: 1.2,
+      specularIntensity: 1.4, clearcoat: 1.0, clearcoatRoughness: 0.06,
     });
+    const bulbMesh = new THREE.Mesh(latheGeo, glassMat);
 
-    const bulbMesh = new THREE.Mesh(latheGeometry, glassMaterial);
-    
+    const innerGeo = new THREE.SphereGeometry(0.72, 24, 24);
+    const innerMat = new THREE.MeshBasicMaterial({ color: 0xffdd66, transparent: true, opacity: 0.12 });
+    const innerGlow = new THREE.Mesh(innerGeo, innerMat);
+    innerGlow.position.y = 0.05;
+
+    const filPts = [];
+    for (let i = 0; i < 22; i++) {
+      const t = i / 21, a = t * Math.PI * 4, r = 0.18 * (1 - t * 0.45);
+      filPts.push(new THREE.Vector3(Math.cos(a) * r, -0.35 + t * 0.7, Math.sin(a) * r));
+    }
+    const filCurve = new THREE.CatmullRomCurve3(filPts);
+    const filGeo = new THREE.TubeGeometry(filCurve, 48, 0.022, 8);
+    const filMat = new THREE.MeshBasicMaterial({ color: 0xffcc44 });
+    const filament = new THREE.Mesh(filGeo, filMat);
+
+    const threadGeo = new THREE.TorusGeometry(0.38, 0.045, 8, 32);
+    const threadMat = new THREE.MeshStandardMaterial({ color: 0x1e1e1e, metalness: 0.95, roughness: 0.2 });
+    const threadGroup = new THREE.Group();
+    for (let j = 0; j < 5; j++) {
+      const t = new THREE.Mesh(threadGeo, threadMat);
+      t.position.y = -1.32 - j * 0.09; t.rotation.x = Math.PI / 2;
+      threadGroup.add(t);
+    }
+
     const bulbGroup = new THREE.Group();
-    bulbGroup.add(bulbMesh);
-
-    // Screw cap threads (metallic base rings)
-    const threadGeom = new THREE.TorusGeometry(0.4, 0.05, 12, 32);
-    const threadMat = new THREE.MeshStandardMaterial({
-      color: 0x2e2f3d,
-      metalness: 0.9,
-      roughness: 0.2
-    });
-    for (let j = 0; j < 3; j++) {
-      const thread = new THREE.Mesh(threadGeom, threadMat);
-      thread.position.set(0, -1.05 - j * 0.08, 0);
-      thread.rotation.x = Math.PI / 2;
-      bulbGroup.add(thread);
-    }
-
-    // Glowing Neon Filament (cyan / purple emissive)
-    const filamentPoints = [];
-    for (let i = 0; i < 24; i++) {
-      const t = i / 23;
-      const angle = t * Math.PI * 3.8;
-      const radius = 0.18 * (1 - t * 0.4);
-      const x = Math.cos(angle) * radius;
-      const z = Math.sin(angle) * radius;
-      const y = -0.3 + t * 0.7;
-      filamentPoints.push(new THREE.Vector3(x, y, z));
-    }
-    const filamentCurve = new THREE.CatmullRomCurve3(filamentPoints);
-    const filamentGeom = new THREE.TubeGeometry(filamentCurve, 48, 0.022, 8, false);
-    const filamentMat = new THREE.MeshBasicMaterial({
-      color: 0x00dfd8, // Emissive Cyan
-    });
-    const filament = new THREE.Mesh(filamentGeom, filamentMat);
-    bulbGroup.add(filament);
-
+    bulbGroup.add(bulbMesh, innerGlow, filament, threadGroup);
     scene.add(bulbGroup);
 
-    // Floating particles inside and around
-    const particleCount = 45;
-    const particleGeometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 4;
-      positions[i + 1] = (Math.random() - 0.5) * 4;
-      positions[i + 2] = (Math.random() - 0.5) * 4;
-    }
-    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const particleMat = new THREE.PointsMaterial({
-      color: 0xff007a, // Neon Pink particles
-      size: 0.045,
-      transparent: true,
-      opacity: 0.5
+    // Orbiting halos
+    const rings = [
+      { r: 1.9, tube: 0.011, rot: [0.4, 0, 0], speed: 0.003, color: 0xf5a623, op: 0.5 },
+      { r: 2.4, tube: 0.007, rot: [0, 0.5, 0.3], speed: -0.002, color: 0x8b5cf6, op: 0.4 },
+      { r: 2.9, tube: 0.005, rot: [0.8, 0.2, 0], speed: 0.0015, color: 0x00e8f0, op: 0.3 },
+    ].map(d => {
+      const geo = new THREE.TorusGeometry(d.r, d.tube, 8, 80);
+      const mat = new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: d.op });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.rotation.set(...d.rot);
+      scene.add(mesh);
+      return { mesh, speed: d.speed };
     });
-    const starfield = new THREE.Points(particleGeometry, particleMat);
-    scene.add(starfield);
 
-    // Interaction variables
-    let mouseX = 0, mouseY = 0;
-    let targetX = 0, targetY = 0;
+    // Particles
+    const pCount = 200;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount * 3; i += 3) {
+      const phi = Math.acos(2 * Math.random() - 1), theta = Math.random() * 2 * Math.PI;
+      const r = 2.5 + Math.random() * 3.5;
+      pPos[i] = r * Math.sin(phi) * Math.cos(theta);
+      pPos[i+1] = r * Math.sin(phi) * Math.sin(theta);
+      pPos[i+2] = r * Math.cos(phi);
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({ color: 0xf5a623, size: 0.04, transparent: true, opacity: 0.5 });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
 
-    const handleMouseMove = (event) => {
-      const rect = canvasRef.current.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      mouseX = (event.clientX - cx) / 250;
-      mouseY = (event.clientY - cy) / 250;
+    let targetRotX = 0, targetRotY = 0, curRotX = 0, curRotY = 0;
+    const onMouseMove = (e) => {
+      targetRotY = ((e.clientX / W) - 0.5) * 0.9;
+      targetRotX = ((e.clientY / H) - 0.5) * -0.5;
     };
+    window.addEventListener('mousemove', onMouseMove);
 
-    window.addEventListener('mousemove', handleMouseMove);
-
-    // Resize Handler
-    const handleResize = () => {
-      if (!canvasRef.current) return;
-      const w = canvasRef.current.clientWidth;
-      const h = canvasRef.current.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
+    const onResize = () => {
+      const w = window.innerWidth, h = window.innerHeight;
+      camera.aspect = w / h; camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', onResize);
 
-    // Animation loop
-    let animationFrameId;
+    let frameId;
     const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-
-      // Smooth damp rotation and drift
-      targetX += (mouseX - targetX) * 0.06;
-      targetY += (mouseY - targetY) * 0.06;
-
-      bulbGroup.rotation.y = targetX * 1.5;
-      bulbGroup.rotation.x = -targetY * 1.5 + Math.sin(Date.now() * 0.001) * 0.1;
-      
-      // Idle float animation
-      bulbGroup.position.y = Math.sin(Date.now() * 0.0015) * 0.12;
-
-      // Color pulsing filament and particles
-      const pulse = 0.5 + Math.sin(Date.now() * 0.003) * 0.5;
-      filamentMat.color.setHSL(0.5 + pulse * 0.3, 1.0, 0.5);
-
+      frameId = requestAnimationFrame(animate);
+      const t = Date.now() * 0.001;
+      curRotX += (targetRotX - curRotX) * 0.05;
+      curRotY += (targetRotY - curRotY) * 0.05;
+      bulbGroup.rotation.y = curRotY + Math.sin(t * 0.4) * 0.08;
+      bulbGroup.rotation.x = curRotX + Math.sin(t * 0.3) * 0.05;
+      bulbGroup.position.y = Math.sin(t * 0.6) * 0.12;
+      const pulse = 0.5 + Math.sin(t * 2.5) * 0.5;
+      glow.intensity = 4 + pulse * 2.5;
+      innerMat.opacity = 0.08 + pulse * 0.1;
+      filMat.color.setHSL(0.11 + pulse * 0.04, 1, 0.5 + pulse * 0.1);
+      rings.forEach(({ mesh, speed }) => { mesh.rotation.z += speed; mesh.rotation.x += speed * 0.5; });
+      particles.rotation.y += 0.0008;
       renderer.render(scene, camera);
     };
-
     animate();
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', handleResize);
-      latheGeometry.dispose();
-      glassMaterial.dispose();
-      threadGeom.dispose();
-      threadMat.dispose();
-      filamentGeom.dispose();
-      filamentMat.dispose();
-      particleGeometry.dispose();
-      particleMat.dispose();
+      cancelAnimationFrame(frameId);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('resize', onResize);
       renderer.dispose();
     };
   }, []);
 
   return (
-    <section className="hero-split-container">
-      {/* 3D Glassmorphic Bulb Left Panel */}
-      <div className="hero-visual-panel">
-        <canvas className="hero-3d-canvas" ref={canvasRef} />
-        <div className="hero-visual-radial" />
+    <section className="hero-stage">
+      <div className="hero-canvas-container">
+        <canvas className="hero-canvas" ref={canvasRef} />
       </div>
-
-      {/* Frosted Glassmorphic Copy Right Panel */}
-      <div className="hero-text-panel">
-        <div className="glass-card">
-          <div className="card-spark">💡</div>
-          
-          <div className="card-brand">
-            <span className="brand-badge">VIT CHENNAI</span>
-            <h1 className="brand-title">BiC</h1>
-            <p className="brand-subtitle">Business Innovation Community</p>
-          </div>
-
-          <div className="divider-line" />
-
-          <p className="card-lede">
-            The catalyst for builders, creators, and future founders. We bridge the gap 
-            between bold business strategies and deep technical execution.
-          </p>
-
-          <div className="card-features">
-            <div className="feature-item">
-              <span className="feature-bullet cyan">✦</span>
-              <span><strong>DeFy Hackathon</strong> — Flagship 24h innovation sprint</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-bullet purple">✦</span>
-              <span><strong>TechnoVIT Events</strong> — Workshops, tech exhibits & talks</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-bullet pink">✦</span>
-              <span><strong>Builder Cohorts</strong> — Weekly project squads & AMAs</span>
-            </div>
-          </div>
-
-          <div className="card-actions">
-            <button className="btn btn-acid" onClick={() => onNavigate('defy')}>
-              Explore DeFy
-            </button>
-            <button className="btn btn-ghost" onClick={() => onNavigate('events')}>
-              Upcoming Meets
-            </button>
-          </div>
+      <div className="hero-content">
+        <p className="hero-eyebrow">VIT Chennai · EST. 2024</p>
+        <h1 className="hero-title">BiC</h1>
+        <p className="hero-subtitle">Business Innovation Community</p>
+        <div className="hero-cta">
+          <button className="btn btn-amber" onClick={() => onNavigate('defy')}>Explore DeFy ↗</button>
+          <button className="btn btn-ghost" onClick={() => onNavigate('events')}>Upcoming Events</button>
         </div>
       </div>
+      <div className="hero-scroll-hint">scroll</div>
     </section>
   );
 }
