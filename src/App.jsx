@@ -6,9 +6,13 @@ import Posts from './components/Posts';
 import Members from './components/Members';
 import Defy from './components/Defy';
 import Events from './components/Events';
+import LandingPage from './components/LandingPage';
+import PixarIntro from './components/PixarIntro';
 
 export default function App() {
   const [activePage, setActivePage] = useState('home');
+  const [showLanding, setShowLanding] = useState(true);
+  const [showIntro, setShowIntro] = useState(true);
 
   // Sync state from URL hash on load/change
   useEffect(() => {
@@ -45,6 +49,19 @@ export default function App() {
 
   return (
     <>
+      {showIntro && (
+        <PixarIntro 
+          onEnter={() => setShowIntro(false)} 
+        />
+      )}
+      {showLanding && (
+        <LandingPage 
+          onEnter={() => {
+            setShowLanding(false);
+            handleNavigate('home');
+          }} 
+        />
+      )}
       <Navbar activePage={activePage} onNavigate={handleNavigate} />
       
       <main>
