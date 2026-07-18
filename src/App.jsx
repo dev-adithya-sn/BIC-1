@@ -15,7 +15,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
   const [activePage, setActivePage] = useState('home');
-  const [showIntro, setShowIntro] = useState(true);
 
   // ── LENIS SMOOTH SCROLL ──────────────────────────────
   useEffect(() => {
@@ -39,6 +38,13 @@ export default function App() {
       gsap.ticker.remove(() => {});
     };
   }, []);
+
+  // Determine if we should show the intro (skip it if there's already a hash route on load)
+  const [showIntro, setShowIntro] = useState(() => {
+    const hash = window.location.hash.slice(1);
+    const valid = ['posts', 'members', 'defy', 'events'];
+    return !valid.includes(hash);
+  });
 
   // ── HASH ROUTING ──────────────────────────────────────
   useEffect(() => {
