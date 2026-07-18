@@ -42,31 +42,6 @@ export default function LandingPage({ onEnter }) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Create 3D Geometric Crystal (Icosahedron)
-    const geometry = new THREE.IcosahedronGeometry(2.5, 1);
-    
-    // Wireframe material with glowing acid green color
-    const material = new THREE.MeshBasicMaterial({
-      color: 0xc3ff4d,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.8,
-    });
-
-    const crystal = new THREE.Mesh(geometry, material);
-    scene.add(crystal);
-
-    // Add smaller floating nodes at vertex points
-    const pointsGeometry = new THREE.IcosahedronGeometry(2.52, 1);
-    const pointsMaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.08,
-      transparent: true,
-      opacity: 0.9,
-    });
-    const points = new THREE.Points(pointsGeometry, pointsMaterial);
-    scene.add(points);
-
     // Add starfield/particles background
     const particleCount = 200;
     const particleGeometry = new THREE.BufferGeometry();
@@ -129,12 +104,6 @@ export default function LandingPage({ onEnter }) {
       camera.position.y = -targetY * 0.8;
       camera.lookAt(scene.position);
 
-      // Rotate geometric structure
-      crystal.rotation.y += 0.003;
-      crystal.rotation.x += 0.002;
-      points.rotation.y += 0.003;
-      points.rotation.x += 0.002;
-
       // Rotate background stars
       starfield.rotation.y -= 0.0005;
 
@@ -148,10 +117,6 @@ export default function LandingPage({ onEnter }) {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
-      geometry.dispose();
-      material.dispose();
-      pointsGeometry.dispose();
-      pointsMaterial.dispose();
       particleGeometry.dispose();
       particleMaterial.dispose();
       renderer.dispose();

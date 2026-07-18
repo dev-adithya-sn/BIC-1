@@ -2,21 +2,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --ink: #050604;
-  --raise: #0e1107;
-  --raise-2: #14180b;
-  --acid: #c3ff4d;
-  --acid-press: #9ed430;
-  --onacid: #050604;
-  --txt: #f3f6ee;
-  --fog: #a3ab97;
-  --line: rgba(195, 255, 77, 0.12);
+  --ink: #050508;
+  --raise: #0d0d14;
+  --raise-2: #12121c;
+  --acid: #00f3ff;
+  --acid-press: #00b5ff;
+  --onacid: #050508;
+  --txt: #f0f5f7;
+  --fog: #9ab2bc;
+  --line: rgba(0, 243, 255, 0.12);
   --hair: rgba(255, 255, 255, 0.05);
   --disp: 'Chakra Petch', ui-monospace, 'SF Mono', Menlo, monospace;
   --body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --r-card: 20px;
   --r-panel: 28px;
-  --glow-color: rgba(195, 255, 77, 0.15);
+  --glow-color: rgba(0, 243, 255, 0.15);
+  --purple: #b500ff;
+  --purple-glow: rgba(181, 0, 255, 0.15);
 }
 
 * {
@@ -32,8 +34,8 @@ html {
 body {
   background: var(--ink);
   background-image: 
-    radial-gradient(at 0% 0%, rgba(195, 255, 77, 0.03) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(195, 255, 77, 0.02) 0px, transparent 50%),
+    radial-gradient(at 0% 0%, rgba(0, 243, 255, 0.03) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(181, 0, 255, 0.025) 0px, transparent 50%),
     linear-gradient(to right, rgba(255, 255, 255, 0.01) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
@@ -669,7 +671,7 @@ h1.display {
 
 /* ---------- acid panels ---------- */
 .panel-acid {
-  background: linear-gradient(135deg, var(--acid) 0%, #a2e02b 100%);
+  background: linear-gradient(135deg, var(--acid) 0%, var(--purple) 100%);
   color: var(--onacid);
   border-radius: var(--r-panel);
   padding: clamp(32px, 6vw, 56px);
@@ -1263,7 +1265,7 @@ h1.display {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, var(--acid) 0%, #a2e02b 100%);
+  background: linear-gradient(135deg, var(--acid) 0%, var(--purple) 100%);
   opacity: 0;
   z-index: 1;
   transition: opacity 0.4s ease;
@@ -1330,3 +1332,352 @@ h1.display {
   }
 }
 
+/* ---------- 3D Bulb Intro Portal ---------- */
+.bulb-intro-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #030403;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.bulb-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.bulb-hud {
+  position: absolute;
+  bottom: 8%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.bulb-hud-title {
+  font-family: var(--disp);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  color: var(--txt);
+  text-shadow: 0 0 10px rgba(195, 255, 77, 0.4);
+  text-transform: uppercase;
+}
+
+.bulb-hud-status {
+  font-family: var(--disp);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--fog);
+  opacity: 0.65;
+}
+
+.bulb-grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: 
+    linear-gradient(rgba(0, 243, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.015) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Flicker keyframes for screens / glow overlay */
+.flicker-active {
+  animation: horrorFlicker 1.8s infinite;
+}
+
+@keyframes horrorFlicker {
+  0%, 100% { background: #030403; }
+  10%, 12%, 18%, 20%, 35%, 37%, 70%, 72% { background: #000000; filter: brightness(0.6); }
+  11%, 19%, 36%, 71% { background: #080b05; filter: brightness(1.2); }
+}
+
+/* ---------- Pixar Style Intro Portal ---------- */
+.pixar-intro-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #050604;
+  z-index: 2500;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.pixar-intro-container.horror-active {
+  animation: horrorFlicker 1.5s infinite;
+}
+
+.pixar-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pixar-logo-layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+.pixar-title {
+  font-family: var(--disp);
+  font-weight: 800;
+  font-size: clamp(80px, 15vw, 160px);
+  letter-spacing: 0.1em;
+  color: var(--txt);
+  text-shadow: 0 0 40px rgba(195, 255, 77, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.pixar-i-placeholder {
+  display: inline-block;
+  width: clamp(50px, 9vw, 90px);
+}
+
+.pixar-sub {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: clamp(10px, 1.8vw, 15px);
+  color: var(--acid);
+  letter-spacing: 0.45em;
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.pixar-sub.visible {
+  opacity: 0.7;
+  transform: translateY(0);
+  text-shadow: 0 0 20px rgba(195, 255, 77, 0.4);
+}
+
+.pixar-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  background: 
+    linear-gradient(rgba(0, 243, 255, 0.008) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.008) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ---------- 3D Innovation Core Reactor Portal ---------- */
+.reactor-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #050508;
+  z-index: 2500;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1.0s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.reactor-container.warp-active {
+  animation: reactorFlash 0.9s ease-out forwards;
+}
+
+@keyframes reactorFlash {
+  0% { filter: brightness(1) contrast(1); }
+  60% { filter: brightness(2) contrast(1.5); }
+  100% { filter: brightness(5); opacity: 0; }
+}
+
+.reactor-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Projected HTML labels on top of 3D coordinates */
+.reactor-labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.reactor-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: #fff;
+  background: rgba(13, 13, 20, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.1s ease;
+  user-select: none;
+}
+
+.label-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* HUD System overlays */
+.reactor-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hud-corner {
+  position: absolute;
+  font-family: var(--disp);
+  font-size: 11px;
+  color: var(--fog);
+  opacity: 0.55;
+  letter-spacing: 0.15em;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hud-corner.top-left {
+  top: 40px;
+  left: 40px;
+  border-left: 2px solid var(--acid);
+  padding-left: 14px;
+}
+
+.hud-corner.top-right {
+  top: 40px;
+  right: 40px;
+  border-right: 2px solid var(--purple);
+  padding-right: 14px;
+  align-items: flex-end;
+}
+
+.hud-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 4;
+}
+
+.hud-status-badge {
+  font-family: var(--disp);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--acid);
+  border: 1px solid var(--line);
+  background: rgba(13, 13, 20, 0.4);
+  padding: 8px 20px;
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+  margin-top: 180px; /* Positions below the central 3D core */
+  animation: pulseDiagnostic 2s infinite ease-in-out;
+}
+
+@keyframes pulseDiagnostic {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+.hud-bottom {
+  position: absolute;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--disp);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--fog);
+  opacity: 0.45;
+  text-align: center;
+  animation: pulseStatus 1.5s infinite alternate;
+}
+
+@keyframes pulseStatus {
+  from { opacity: 0.3; }
+  to { opacity: 0.65; }
+}
+
+.reactor-glow-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle, transparent 40%, rgba(5, 5, 8, 0.8) 100%);
+}
