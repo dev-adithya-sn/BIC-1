@@ -59,33 +59,24 @@ export default function Defy() {
 
       {/* Next Edition Wide Card */}
       <div className="wide-card amber-glow reveal-up" style={{ marginBottom: 24 }}>
-        <div className="wide-card-row">
-          <div className="wide-card-left">
-            <div className="section-tag">↯ {DEFY_NEXT.label}</div>
-            <div className="defy-hero-num">DeFy<br /><em>'26</em></div>
-            <p style={{ color: 'var(--txt-2)', fontSize: 16, lineHeight: 1.65, maxWidth: '50ch', marginTop: 16 }}>
-              {DEFY_NEXT.blurb}
-            </p>
-            <div className="chips" style={{ marginTop: 20 }}>
-              {DEFY_NEXT.chips.map((c, i) => <span key={i} className="chip">{c}</span>)}
-            </div>
+        <div className="wide-card-left">
+          <div className="section-tag">↯ {DEFY_NEXT.label}</div>
+          <div className="defy-hero-num">{DEFY_NEXT.title}<br /><em>Next</em></div>
+          <p style={{ color: 'var(--txt-2)', fontSize: 16, lineHeight: 1.65, maxWidth: '50ch', marginTop: 16 }}>
+            {DEFY_NEXT.blurb}
+          </p>
+          <div className="chips" style={{ marginTop: 20 }}>
+            {DEFY_NEXT.chips.map((c, i) => <span key={i} className="chip">{c}</span>)}
           </div>
-          <div className="wide-card-right">
-            <div className="defy-prize-row">
-              {[
-                { pos: '1st Place', amount: '₹25,000' },
-                { pos: '2nd Place', amount: '₹15,000' },
-              ].map((p, i) => (
-                <div key={i} className="defy-prize-card">
-                  <div className="defy-prize-pos">{p.pos}</div>
-                  <div className="defy-prize-amount">{p.amount}</div>
-                </div>
-              ))}
-            </div>
-            <a className="inline-link" href={DEFY_NEXT.link.href} target="_blank" rel="noopener noreferrer">
-              {DEFY_NEXT.link.text}
-            </a>
-          </div>
+          <a
+            className="inline-link"
+            href={DEFY_NEXT.link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ marginTop: 20, display: 'inline-block' }}
+          >
+            {DEFY_NEXT.link.text}
+          </a>
         </div>
       </div>
 
@@ -112,12 +103,14 @@ export default function Defy() {
         Past <em>Editions</em>
       </h2>
       <div className="editions-row">
-        {DEFY_EDITIONS.map((ed, i) => (
+        {DEFY_EDITIONS.map((ed, i) => {
+          const hasWinners = ed.winners && ed.winners.length > 0;
+          return (
           <div
             key={i}
             className="edition-card reveal-up"
-            onClick={() => setOpenEd(openEd === i ? null : i)}
-            style={{ cursor: 'pointer' }}
+            onClick={() => hasWinners && setOpenEd(openEd === i ? null : i)}
+            style={{ cursor: hasWinners ? 'pointer' : 'default' }}
           >
             <div className="edition-name">{ed.ed}</div>
             <div className="edition-when">{ed.when}</div>
@@ -125,7 +118,7 @@ export default function Defy() {
             <div className="edition-facts">
               {ed.facts.map((f, j) => <span key={j} className="edition-fact">{f}</span>)}
             </div>
-            {openEd === i && (
+            {hasWinners && openEd === i && (
               <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {ed.winners.map((w, j) => (
                   <div key={j} style={{ display: 'flex', gap: 12, alignItems: 'center', fontSize: 14 }}>
@@ -137,7 +130,8 @@ export default function Defy() {
               </div>
             )}
           </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

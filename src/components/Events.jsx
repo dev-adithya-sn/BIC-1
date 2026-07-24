@@ -77,7 +77,7 @@ export default function Events() {
       <div className="feature-grid feature-grid-3 reveal-up" style={{ marginBottom: 80 }}>
         {[
           { tag: 'Pitch', icon: '🎤', title: 'Pitch Competitions', body: 'Put your idea in front of real judges. Build the deck, practice the delivery, handle the hard questions.' },
-          { tag: 'Build', icon: '⚒️', title: 'Build Nights', body: 'Monthly evening sessions. Laptops open, music low, something small shipped by midnight — every time.' },
+          { tag: 'Hackathon', icon: '⚒️', title: 'DeFy', body: 'Our flagship. An online ideation round, then a 24-hour onsite build and a top-nine pitch finale.' },
           { tag: 'Learn', icon: '📡', title: 'Founder AMAs', body: 'A VIT alum who actually raised money, on stage, no filter. You ask, they answer honestly.' },
         ].map((d, i) => (
           <div key={i} className={`feature-card ${i === 0 ? 'dark-amber' : ''} reveal-up`}>
@@ -90,20 +90,24 @@ export default function Events() {
       </div>
 
       {/* General Events */}
-      <h2 className="page-hero-title reveal-up" style={{ fontSize: 'clamp(28px,3.5vw,44px)', marginBottom: 24 }}>
-        Club <em>Initiatives</em>
-      </h2>
-      <div className="number-list reveal-up">
-        {EVENTS.general.map((ev, i) => (
-          <div key={i} className="number-item">
-            <span className="number-item-num">0{i+1}</span>
-            <div className="number-item-body">
-              <div className="number-item-title">{ev.title}</div>
-              <div className="number-item-sub">{ev.blurb}</div>
-            </div>
+      {EVENTS.general.length > 0 && (
+        <>
+          <h2 className="page-hero-title reveal-up" style={{ fontSize: 'clamp(28px,3.5vw,44px)', marginBottom: 24 }}>
+            Club <em>Initiatives</em>
+          </h2>
+          <div className="number-list reveal-up">
+            {EVENTS.general.map((ev, i) => (
+              <div key={i} className="number-item">
+                <span className="number-item-num">0{i+1}</span>
+                <div className="number-item-body">
+                  <div className="number-item-title">{ev.title}</div>
+                  <div className="number-item-sub">{ev.blurb}</div>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </section>
   );
 }

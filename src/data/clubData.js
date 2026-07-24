@@ -102,43 +102,40 @@ export const MEMBERS = [
   }
 ];
 
+export const SOCIALS = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/bic-vitc/posts/?feedView=all" },
+  { label: "Instagram", href: "https://www.instagram.com/bic_vitc/?hl=en" },
+  { label: "Medium", href: "https://medium.com/@businessinnovationcommunityvit" },
+];
+
 export const DEFY_NEXT = {
   label: "Next edition",
-  title: "DeFy — VOID",
-  blurb: "The next chapter is brewing. Tracks, dates and the prize pool drop on the socials first — but the name should tell you the vibe.",
+  title: "DeFy",
+  blurb: "The next edition is in the works. Dates, tracks and the prize pool are announced on our socials first.",
   chips: ["Status: in the works", "Dates: TBA", "Tracks: TBA"],
   link: { text: "Visit the DeFy site ↗", href: "https://defy26.vercel.app" }
 };
 
+// `winners` is optional — add it only when the results are confirmed.
+// e.g. winners: [{ pos: "1st", team: "Team name", prize: "₹25,000/-" }]
 export const DEFY_EDITIONS = [
   {
     ed: "DeFy'26",
     when: "12–13 Jan 2026 · VIT Chennai",
     theme: "Third edition. Web3 × entrepreneurship — online ideation round, then a 24-hour onsite build and a top-nine finale.",
-    facts: ["₹40,000 pool / track", "1st — ₹25,000", "2nd — ₹15,000", "+ Bounties", "Top 9 finale"],
-    winners: [
-      { pos: "1st", team: "TBA", prize: "₹25,000/-" },
-      { pos: "2nd", team: "TBA", prize: "₹15,000/-" },
-    ]
+    facts: ["₹40,000 pool / track", "1st — ₹25,000", "2nd — ₹15,000", "+ Bounties", "Top 9 finale"]
   },
   {
     ed: "DeFy'25",
     when: "10–11 Jan 2025 · MG Auditorium, VIT Chennai",
     theme: "Second edition. 24 hours of Web3 across two tracks — DeFi and Public Goods.",
-    facts: ["Track: DeFi", "Track: Public Goods", "24-hour build"],
-    winners: [
-      { pos: "1st", team: "TBA", prize: "" },
-      { pos: "2nd", team: "TBA", prize: "" },
-    ]
+    facts: ["Track: DeFi", "Track: Public Goods", "24-hour build"]
   },
   {
     ed: "DeFy'24",
     when: "Jan 2024 · VIT Chennai",
     theme: "Where it started. The first edition that proved a business-first hackathon could pull a crowd.",
-    facts: ["The original"],
-    winners: [
-      { pos: "1st", team: "TBA", prize: "" },
-    ]
+    facts: ["The original"]
   }
 ];
 
@@ -160,7 +157,6 @@ export const EVENTS = {
   general: [
     { title: "Founder AMA night", by: "Proposed at core meet", blurb: "A VIT alum who's actually raised money, on stage, no filter. Ask anything." },
     { title: "6-hour ideathon", by: "Proposed at core meet", blurb: "One evening, one problem statement, teams of two. Sprint format — decks by dinner." },
-    { title: "Pitch clinic", by: "Proposed at core meet", blurb: "Bring your idea, leave with a deck that survives hard questions. Seniors tear it apart kindly." },
-    { title: "Build nights", by: "Proposed at core meet", blurb: "Monthly. Laptops open, music low, something small shipped by midnight." }
+    { title: "Pitch clinic", by: "Proposed at core meet", blurb: "Bring your idea, leave with a deck that survives hard questions. Seniors tear it apart kindly." }
   ]
 };
